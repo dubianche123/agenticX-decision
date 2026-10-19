@@ -1,0 +1,5 @@
+flowchart LR
+    PACKAGE[Local PDF package] --> LOCATE[Text agent: locate claim and attachment]
+    LOCATE --> VISION[Vision model: inspect page images]
+    VISION --> COMPARE[Python: equal counts and minimum met]
+    COMPARE --> OUTPUT[Structured result]

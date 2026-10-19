@@ -37,26 +37,9 @@ AgenticX Decision 是一个基于 AgenticX 的本地文档决策审计原型。�
 
 每条审核项独立运行 ReAct。数值、日期等明确条件由小型代码工具执行，避免仅依赖模型在自然语言里计算。
 
-```mermaid
-flowchart LR
-    PDF["本地 PDF"] --> TEXT["文本抽取"]
-    RULE["自然语言规则"] --> SPEC["JSON 规则规格"]
-    TEXT --> AGENT["独立 ReAct 执行"]
-    SPEC --> AGENT
-    AGENT <--> TOOLS["搜索与规则工具"]
-    AGENT --> CHECK{"结构校验"}
-    CHECK -->|通过| RESULT["结论与证据字段"]
-    CHECK -->|阻断| REVIEW["待复核问题"]
+![单条审核项执行流程](docs/assets/audit-flow-cn.svg)
 
-    classDef input fill:#EEF4FF,stroke:#769DE1,color:#203654
-    classDef agent fill:#E9F1FF,stroke:#517DD0,color:#203654
-    classDef tool fill:#E6F5EE,stroke:#51A684,color:#214C3B
-    classDef gate fill:#FFF4DC,stroke:#CDA34D,color:#674E1C
-    class PDF,RULE,TEXT,SPEC input
-    class AGENT,RESULT agent
-    class TOOLS tool
-    class CHECK,REVIEW gate
-```
+<sub>[Mermaid 源码](docs/assets/audit-flow.mmd)</sub>
 
 结构校验会阻断非法 JSON、空证据字段或缺少必要规则工具调用的输出。**目前尚未验证引文是否真实对应原文、工具是否成功执行，以及模型最终结论是否与工具结果一致。** 这些仍需人工复核，也是后续可扩展的方向。
 
@@ -64,18 +47,9 @@ flowchart LR
 
 当主文件的申报内容需要附件佐证时，走单独的核验路径：
 
-```mermaid
-flowchart LR
-    PACKAGE["本地 PDF 材料包"] --> LOCATE["文本智能体<br/>定位申报值与附件"]
-    LOCATE --> VISION["视觉模型<br/>查看渲染页面"]
-    VISION --> COMPARE["Python 比较<br/>申报等于实证且满足下限"]
-    COMPARE --> OUTPUT["结构化核验结果"]
+![跨文件核验路径](docs/assets/cross-file-flow-cn.svg)
 
-    classDef stage fill:#EEF4FF,stroke:#769DE1,color:#203654
-    classDef code fill:#E6F5EE,stroke:#51A684,color:#214C3B
-    class PACKAGE,LOCATE,VISION,OUTPUT stage
-    class COMPARE code
-```
+<sub>[Mermaid 源码](docs/assets/cross-file-flow.mmd)</sub>
 
 在线运行需要本地 PDF 材料和具备视觉能力的模型。跨文件 `--mock` 示例只验证代码比较器，不执行 OCR，也不评测视觉模型。
 

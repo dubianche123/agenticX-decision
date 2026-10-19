@@ -37,26 +37,9 @@ The project explores a practical split: **models retrieve and interpret; Python 
 
 Each item gets its own ReAct run. Deterministic rules map to a small tool rather than asking the model to calculate the check itself.
 
-```mermaid
-flowchart LR
-    PDF["Local PDF"] --> TEXT["Text extraction"]
-    RULE["Rule text"] --> SPEC["JSON rule spec"]
-    TEXT --> AGENT["Isolated ReAct run"]
-    SPEC --> AGENT
-    AGENT <--> TOOLS["Search + rule tools"]
-    AGENT --> CHECK{"Structural checks"}
-    CHECK -->|pass| RESULT["Verdict + evidence"]
-    CHECK -->|blocked| REVIEW["Problems for review"]
+![Single-item audit flow](docs/assets/audit-flow.svg)
 
-    classDef input fill:#EEF4FF,stroke:#769DE1,color:#203654
-    classDef agent fill:#E9F1FF,stroke:#517DD0,color:#203654
-    classDef tool fill:#E6F5EE,stroke:#51A684,color:#214C3B
-    classDef gate fill:#FFF4DC,stroke:#CDA34D,color:#674E1C
-    class PDF,RULE,TEXT,SPEC input
-    class AGENT,RESULT agent
-    class TOOLS tool
-    class CHECK,REVIEW gate
-```
+<sub>[Mermaid source](docs/assets/audit-flow.mmd)</sub>
 
 The structural check blocks malformed JSON, an empty evidence field, or a missing required rule-tool call. **It does not yet verify that a quote matches the source, that the tool completed successfully, or that the final verdict agrees with the tool result.** Those checks remain reviewer responsibilities and extension points.
 
@@ -64,18 +47,9 @@ The structural check blocks malformed JSON, an empty evidence field, or a missin
 
 A separate runner handles rules where the main document makes a claim that must be checked against an attachment.
 
-```mermaid
-flowchart LR
-    PACKAGE["Local PDF package"] --> LOCATE["Text agent<br/>locate claim + attachment"]
-    LOCATE --> VISION["Vision model<br/>inspect rendered pages"]
-    VISION --> COMPARE["Python comparison<br/>claim = evidence, minimum met"]
-    COMPARE --> OUTPUT["Structured result"]
+![Cross-document verification flow](docs/assets/cross-file-flow.svg)
 
-    classDef stage fill:#EEF4FF,stroke:#769DE1,color:#203654
-    classDef code fill:#E6F5EE,stroke:#51A684,color:#214C3B
-    class PACKAGE,LOCATE,VISION,OUTPUT stage
-    class COMPARE code
-```
+<sub>[Mermaid source](docs/assets/cross-file-flow.mmd)</sub>
 
 The live path needs local PDFs and a vision-capable model. The cross-file `--mock` example tests the code comparator only; it does not run OCR or evaluate a vision model.
 

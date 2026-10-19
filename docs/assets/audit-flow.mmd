@@ -1,0 +1,6 @@
+flowchart LR
+    PDF[Local PDF] --> TEXT[Text extraction] --> SEARCH[search_text]
+    RULE[Rule text] --> SPEC[JSON rule spec] --> AGENT[Isolated AgenticX ReAct]
+    AGENT <-->|query and snippets| SEARCH
+    AGENT <-->|call and result| TOOLS[Python rule tools]
+    AGENT --> CHECK[Structural checks] --> RESULT[Result for review]
