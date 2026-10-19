@@ -11,11 +11,11 @@
 [![License](https://img.shields.io/badge/License-Apache--2.0-2EA98B)](LICENSE)
 [![Demo](https://img.shields.io/badge/Offline%20demo-Synthetic%20data-8B6FC0)](#try-it-locally)
 
-[Quick start](#try-it-locally) · [How it works](#how-it-works) · [Live configuration](#connect-a-model) · [中文说明](README_CN.md)
+**English** · [简体中文](README_CN.md)
+
+[Quick start](#try-it-locally) · [How it works](#how-it-works) · [Live configuration](#connect-a-model)
 
 </div>
-
-**中文简介：基于 AgenticX 的文档审核智能体研究原型，用检索、Python 规则工具和本地 Web 控制台展示可复核的证据。** [中文快速体验](README_CN.md#快速体验)
 
 AgenticX Decision is a local research harness for evidence-backed document review. An agent searches a document, invokes hand-written rule tools, and produces a structured result for inspection. A small web console makes rules, evidence, blocked results, and usage visible in one workflow.
 
@@ -62,8 +62,8 @@ The live path needs local PDFs and a vision-capable model. The cross-file `--moc
 Requires **Python 3.10+ and Git**; the release was verified with Python 3.11. Installation fetches public dependencies, including a pinned [AgenticX source revision](https://github.com/DemonDamon/AgenticX/commit/a4d7caf29c9ce96f7b79ec2584b2f83f9ebdabe0).
 
 ```bash
-git clone https://github.com/dubianche123/agenticX-decision.git
-cd agenticX-decision
+git clone https://github.com/dubianche123/agenticx-document-review.git
+cd agenticx-document-review
 
 python3 -m venv .venv
 source .venv/bin/activate

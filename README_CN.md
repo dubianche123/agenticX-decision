@@ -11,7 +11,9 @@
 [![License](https://img.shields.io/badge/License-Apache--2.0-2EA98B)](LICENSE)
 [![Demo](https://img.shields.io/badge/Offline%20demo-Synthetic%20data-8B6FC0)](#快速体验)
 
-[快速体验](#快速体验) · [工作原理](#工作原理) · [接入真实模型](#接入真实模型) · [English](README.md)
+[English](README.md) · **简体中文**
+
+[快速体验](#快速体验) · [工作原理](#工作原理) · [接入真实模型](#接入真实模型)
 
 </div>
 
@@ -60,8 +62,8 @@ AgenticX Decision 是一个基于 AgenticX 的本地文档决策审计原型。�
 需要 **Python 3.10+ 和 Git**；当前发布内容已在 Python 3.11 环境验证。安装依赖需要联网，仅使用公开包与固定的[上游 AgenticX 源码版本](https://github.com/DemonDamon/AgenticX/commit/a4d7caf29c9ce96f7b79ec2584b2f83f9ebdabe0)。
 
 ```bash
-git clone https://github.com/dubianche123/agenticX-decision.git
-cd agenticX-decision
+git clone https://github.com/dubianche123/agenticx-document-review.git
+cd agenticx-document-review
 
 python3 -m venv .venv
 source .venv/bin/activate
