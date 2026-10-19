@@ -2,7 +2,7 @@
 
 <img src="docs/assets/overview.svg" alt="AgenticX Decision: retrieve document evidence, execute code rules, inspect structured results" width="100%" />
 
-# AgenticX Decision
+# AgenticX Decision · Evidence-backed Document Review
 
 **Document review with explicit tools, bounded context, and evidence you can inspect.**
 
@@ -15,9 +15,13 @@
 
 </div>
 
+**中文简介：基于 AgenticX 的文档审核智能体研究原型，用检索、Python 规则工具和本地 Web 控制台展示可复核的证据。** [中文快速体验](README_CN.md#快速体验)
+
 AgenticX Decision is a local research harness for evidence-backed document review. An agent searches a document, invokes hand-written rule tools, and produces a structured result for inspection. A small web console makes rules, evidence, blocked results, and usage visible in one workflow.
 
 The project explores a practical split: **models retrieve and interpret; Python tools calculate explicit checks; reviewers inspect the evidence and outcome.** It provides working examples of this pattern, with clear limits on what the current validator enforces.
+
+For developers and researchers exploring PDF review agents, deterministic rule tools, or human review of model outputs. Start with the [key-free synthetic demo](#try-it-locally) to inspect the workflow before connecting a model.
 
 ## What you can try
 
