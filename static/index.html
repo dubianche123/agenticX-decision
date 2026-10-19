@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgenticX Decision · 决策审计控制台</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <strong>AgenticX Decision</strong>
+      <span>决策审计控制台</span>
+    </div>
+    <div id="mock-banner" class="mock-banner hidden">离线演示模式 · 内置剧本回放，不调用 API</div>
+    <button id="btn-settings" class="btn ghost">⚙ 设置</button>
+  </header>
+
+  <nav class="steps">
+    <button class="step active" data-step="1"><span>①</span> 规则</button>
+    <button class="step" data-step="2"><span>②</span> 工作区</button>
+    <button class="step" data-step="3"><span>③</span> 执行</button>
+  </nav>
+
+  <main>
+    <!-- Step 1: rules -->
+    <section id="step-1" class="panel active">
+      <h2>规则</h2>
+      <p class="hint">用自然语言写审核规则。拆解器把它映射成「模板 + 参数」的判定规格——判定权在代码模板里，模型只做映射，不生成代码。数值范围 / 日期时限 / 字段有无映射到模板；主观判断走语义；跨文件核验走三阶段（文本 Agent → 视觉兜底 → 代码对比）。</p>
+      <textarea id="rule-text" rows="4" placeholder="例：示例成员人数应当在3到15人之间，且人数为奇数（虚构示例规则）"></textarea>
+      <div class="row">
+        <button id="btn-example" class="btn ghost">载入示例</button>
+        <span class="spacer"></span>
+        <button id="btn-decompose" class="btn primary">拆解规则</button>
+      </div>
+
+      <div id="decompose-result" class="hidden">
+        <h3>拆解结果 <span id="spec-status"></span></h3>
+        <div class="spec-form">
+          <label>名称<input id="spec-name"></label>
+          <div class="grid2">
+            <label>类型<select id="spec-type">
+              <option value="rule">规则（模板判定）</option>
+              <option value="semantic">语义判断</option>
+              <option value="cross_file">跨文件核验</option>
+            </select></label>
+            <label>模板<select id="spec-template">
+              <option value="numeric_range">numeric_range · 数值范围</option>
+              <option value="date_deadline">date_deadline · 日期时限</option>
+              <option value="field_presence">field_presence · 字段存在</option>
+            </select></label>
+          </div>
+          <label>参数（JSON）<textarea id="spec-params" rows="5"></textarea></label>
+          <label>法规依据<input id="spec-regulation"></label>
+          <label>期望结论（可选，用于自动对照）<input id="spec-expect" placeholder="合格 / 不合格 / 存疑，留空则不对照"></label>
+        </div>
+        <div id="spec-problems" class="problems hidden"></div>
+        <div class="row">
+          <span class="spacer"></span>
+          <button id="btn-save-rule" class="btn primary">保存进规则集</button>
+        </div>
+      </div>
+
+      <h3>规则集 <span id="rule-count" class="muted"></span></h3>
+      <div id="rules-list"></div>
+    </section>
+
+    <!-- Step 2: workspace -->
+    <section id="step-2" class="panel">
+      <h2>工作区</h2>
+      <p class="hint">材料放在 <code>data/</code> 目录（已 gitignore，绝不入库）。散装 PDF 会成为单文件工作区；含 PDF 的文件夹会成为材料包工作区（跨文件核验需要它）。选择一个再进入下一步。</p>
+      <div id="ws-list" class="ws-grid"></div>
+    </section>
+
+    <!-- Step 3: run -->
+    <section id="step-3" class="panel">
+      <h2>执行</h2>
+      <div class="row">
+        <span id="run-context" class="muted"></span>
+        <span class="spacer"></span>
+        <button id="btn-run" class="btn primary">开始审核</button>
+      </div>
+      <div id="run-rules" class="run-rules"></div>
+      <div id="results"></div>
+      <div id="run-summary" class="summary hidden"></div>
+    </section>
+  </main>
+
+  <!-- settings modal -->
+  <div id="settings-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>设置</h2>
+        <button id="btn-close-settings" class="btn ghost">✕</button>
+      </div>
+      <label>API key<input id="set-key" type="password" placeholder="不回显；留空 = 不修改"></label>
+      <div id="key-status" class="key-status"></div>
+      <div class="grid2">
+        <label>全局 base URL<input id="set-base-url" placeholder="https://api.deepseek.com/v1"></label>
+        <label>全局 model<input id="set-model" placeholder="deepseek-v4-flash"></label>
+      </div>
+      <h3>分阶段模型（留空继承全局）</h3>
+      <table class="stage-table">
+        <thead><tr><th>阶段</th><th>model</th><th>base URL</th></tr></thead>
+        <tbody>
+          <tr><td>拆解规则</td><td><input id="stage-decompose-model"></td><td><input id="stage-decompose-url"></td></tr>
+          <tr><td>主审 ReAct</td><td><input id="stage-main-model"></td><td><input id="stage-main-url"></td></tr>
+          <tr><td>视觉兜底</td><td><input id="stage-vision-model"></td><td><input id="stage-vision-url"></td></tr>
+        </tbody>
+      </table>
+      <p class="hint">拆解建议配最强模型（如 DeepSeek 旗舰：读法规、辨形态、抽参数最吃能力）；主审可用快而便宜的模型；视觉兜底需多模态模型（读扫描件）。key 全局共用，只在服务端落盘（chmod 600）。</p>
+      <div class="row">
+        <span id="settings-msg" class="muted"></span>
+        <span class="spacer"></span>
+        <button id="btn-save-settings" class="btn primary">保存配置</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Public upstream pinned to the revision tested with this harness.
+agenticx @ git+https://github.com/DemonDamon/AgenticX.git@a4d7caf29c9ce96f7b79ec2584b2f83f9ebdabe0
+pypdf>=4.0
+pymupdf>=1.24
+openai>=1.30
+fastapi>=0.110
+uvicorn>=0.29
+# Exclude the two compromised upstream releases.
+litellm>=1.82.9,<2,!=1.82.7,!=1.82.8

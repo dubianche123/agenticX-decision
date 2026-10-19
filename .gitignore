@@ -1,0 +1,39 @@
+# Private inputs and generated artifacts
+data/
+results/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.zip
+*.docx
+*.xlsx
+*.csv
+*.log
+*.jsonl
+*.sqlite
+*.db
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.token
+.mzt_demo_key
+.mzt_demo_profile.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
