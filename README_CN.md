@@ -58,8 +58,8 @@ AgenticX Decision 是一个基于 AgenticX 的本地文档决策审计原型。�
 需要 **Python 3.10+ 和 Git**；当前发布内容已在 Python 3.11 环境验证。安装依赖需要联网，仅使用公开包与固定的[上游 AgenticX 源码版本](https://github.com/DemonDamon/AgenticX/commit/a4d7caf29c9ce96f7b79ec2584b2f83f9ebdabe0)。
 
 ```bash
-git clone https://github.com/dubianche123/agenticX-decision-public.git
-cd agenticX-decision-public
+git clone https://github.com/dubianche123/agenticX-decision.git
+cd agenticX-decision
 
 python3 -m venv .venv
 source .venv/bin/activate
