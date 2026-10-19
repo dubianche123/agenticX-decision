@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-labelledby="title desc">
+  <title id="title">AgenticX Decision — document review with explicit tools and evidence</title>
+  <desc id="desc">A local decision-audit harness. Retrieve bounded text, execute code rules through AgenticX ReAct, and inspect structured results with evidence and blocking reasons.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101c35"/><stop offset="1" stop-color="#172c49"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#6ba6ff"/><stop offset="1" stop-color="#72e1d2"/></linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#fff" fill-opacity=".04"/></pattern>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 7 4 1 7" fill="none" stroke="#90a8c7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="1280" height="480" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="480" rx="24" fill="url(#dots)"/>
+  <path d="M1058 0 1280 222M1150 0l130 130" stroke="#78b6ef" stroke-opacity=".08" stroke-width="70"/>
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <g transform="translate(56 40)">
+      <path d="m0 21 12-21 12 21M6 12h12" fill="none" stroke="url(#accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="18" fill="#b6c8e5" font-size="15" font-weight="650" letter-spacing="2.2">AGENTICX / DECISION</text>
+    </g>
+    <text x="56" y="139" fill="#f6f9ff" font-size="48" font-weight="720" letter-spacing="-1.5">From documents to decisions.</text>
+    <text x="58" y="179" fill="#b6c8e5" font-size="20">Bounded retrieval. Code-based rules. Evidence to inspect.</text>
+    <g transform="translate(56 227)">
+      <rect width="352" height="150" rx="16" fill="#1b304f" stroke="#345274"/>
+      <rect x="20" y="22" width="38" height="38" rx="10" fill="#294a73"/>
+      <path d="M33 31h10l6 6v14H33zM43 31v7h6M37 43h8M37 47h6" fill="none" stroke="#91bbff" stroke-width="1.6" stroke-linejoin="round"/>
+      <text x="74" y="47" fill="#9bc3ff" font-size="13" font-weight="700" letter-spacing="1.5">01 / RETRIEVE</text>
+      <text x="22" y="94" fill="#f6f9ff" font-size="23" font-weight="650">Find the relevant text</text>
+      <text x="22" y="124" fill="#b6c8e5" font-size="16">Local PDF · keyword search · offsets</text>
+    </g>
+    <path d="M419 302h30" fill="none" stroke="#90a8c7" stroke-width="2" marker-end="url(#arrow)"/>
+    <g transform="translate(464 227)">
+      <rect width="352" height="150" rx="16" fill="#1b354c" stroke="#38615f"/>
+      <rect x="20" y="22" width="38" height="38" rx="10" fill="#244e51"/>
+      <path d="m36 33-6 8 6 8m9-16 6 8-6 8m-4-18-3 20" fill="none" stroke="#88dfca" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="74" y="47" fill="#8ce3cf" font-size="13" font-weight="700" letter-spacing="1.5">02 / EXECUTE</text>
+      <text x="22" y="94" fill="#f6f9ff" font-size="23" font-weight="650">Keep checks in code</text>
+      <text x="22" y="124" fill="#b6c8e5" font-size="16">AgenticX ReAct · explicit rule tools</text>
+    </g>
+    <path d="M827 302h30" fill="none" stroke="#90a8c7" stroke-width="2" marker-end="url(#arrow)"/>
+    <g transform="translate(872 227)">
+      <rect width="352" height="150" rx="16" fill="#293348" stroke="#615c6b"/>
+      <rect x="20" y="22" width="38" height="38" rx="10" fill="#4a4558"/>
+      <path d="M32 32h15v19H32zM36 37h7M36 42h7M36 47h4" fill="none" stroke="#e1c3ef" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="74" y="47" fill="#ddc3ef" font-size="13" font-weight="700" letter-spacing="1.5">03 / REVIEW</text>
+      <text x="22" y="94" fill="#f6f9ff" font-size="23" font-weight="650">Inspect the result</text>
+      <text x="22" y="124" fill="#b6c8e5" font-size="16">Verdict · evidence · blocking reasons</text>
+    </g>
+    <path d="M56 414h1168" stroke="#8da7ca" stroke-opacity=".18"/>
+    <text x="58" y="449" fill="#9ab2d0" font-size="14">LOCAL RESEARCH PROTOTYPE</text>
+    <text x="1224" y="449" fill="#9ab2d0" font-size="14" text-anchor="end">Synthetic examples included · No API key needed for mock runs</text>
+  </g>
+</svg>
