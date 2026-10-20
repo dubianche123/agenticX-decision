@@ -17,45 +17,44 @@
 
 </div>
 
-AgenticX Decision is a local research harness for evidence-backed document review. An agent searches a document, invokes hand-written rule tools, and produces a structured result for inspection. A small web console makes rules, evidence, blocked results, and usage visible in one workflow.
+If you hand an LLM a 50-page report and ask it to audit 20 compliance rules in one prompt—"board size must be between 3 and 15 and odd," "filed before June 30 of the following year," "conference count in the main report matches the photo attachments"—it fails in two very predictable ways: it misses clauses buried in the middle of the PDF, and it makes embarrassing mental-math or calendar mistakes even after finding the right sentence.
 
-The project explores a practical split: **models retrieve and interpret; Python tools calculate explicit checks; reviewers inspect the evidence and outcome.** It provides working examples of this pattern, with clear limits on what the current validator enforces.
+**AgenticX Decision** is a local research harness built on [AgenticX](https://github.com/DemonDamon/AgenticX) that splits those responsibilities cleanly:
 
-For developers and researchers exploring PDF review agents, deterministic rule tools, or human review of model outputs. Start with the [key-free synthetic demo](#try-it-locally) to inspect the workflow before connecting a model.
+- **Models locate and extract**: each audit item runs in its own isolated ReAct loop using `search_text` to pull short keyword snippets with `[位置≈offset]` character anchors instead of stuffing the full PDF into context.
+- **Python tools calculate the verdict**: numeric ranges, odd/even parity, date deadlines, and cross-file count comparisons are executed by hand-written Python tools (`engine.py` literally instructs the agent: *"结论以此工具返回为准，禁止自行心算"* — adopt the tool's verdict, do not do mental arithmetic).
+- **Humans inspect the evidence**: a local FastAPI web console streams every rule, retrieved snippet, tool call, and fail-closed block reason in one view.
 
-## What you can try
+You can run the [key-free synthetic demo](#try-it-locally) out of the box before connecting a live OpenAI-compatible provider.
 
-| Capability | What is implemented |
+## What is inside
+
+| Capability | How it works in code |
 | --- | --- |
-| Rule specification | Map natural-language rules to a JSON template specification; no executable code generation |
-| Bounded retrieval | Extract a local PDF's text, then search for keyword snippets with character offsets |
-| Deterministic tools | Numeric range/parity, date deadlines, and required-field checks |
-| Semantic review | An isolated AgenticX ReAct run with retrieved context for each item |
-| Cross-document review | Locate a claim and attachment, inspect rendered pages with a vision model, then compare counts in Python |
-| Local console | Rule editing, PDF/package workspaces, streamed results, evidence, and usage summaries |
-| Experiment scripts | Bounded audit, cross-file comparison, and full-text baseline entrypoints |
-
-**Scope:** a research prototype, not a production review service. The public examples are entirely invented. No customer documents, confidential workload measurements, credentials, or production endpoint settings are included.
+| **Rule decomposition** | `decomposer.py` maps natural-language audit rules onto versioned JSON rule templates (`numeric_range`, `date_deadline`, `field_presence`, `semantic`)—never `exec()`ing LLM-generated code. |
+| **Bounded retrieval** | `SearchTextTool` searches extracted PDF text and returns hit counts + windowed snippets with character offsets (`[位置≈86]`). |
+| **Deterministic verdict tools** | `NumericRangeTool`, `DateDeadlineTool`, and `FieldPresenceTool` compute the pass/fail verdict in Python so the LLM never guesses arithmetic or calendar comparisons. |
+| **Fail-closed output check** | Any run that returns malformed JSON, leaves `evidence` empty, or skips a required rule-tool call is automatically marked `blocked: true`. |
+| **Cross-document verification (`E2`)** | `mztdemo_v2.py` extracts a claimed count from the main PDF, uses a vision model to inspect rendered attachment pages, and compares `claimed vs. evidenced` in Python. |
+| **Local web console** | `app.py` (`127.0.0.1:8620`) provides rule editing, workspace selection, live SSE progress, evidence cards, and token-cost estimates. |
 
 ## How it works
 
-Each item gets its own ReAct run. Deterministic rules map to a small tool rather than asking the model to calculate the check itself.
+Each audit item runs as an independent ReAct loop so rules don't pollute each other's context window:
 
 ![Single-item audit flow](docs/assets/audit-flow.svg)
 
 <sub>[Mermaid source](docs/assets/audit-flow.mmd)</sub>
 
-The structural check blocks malformed JSON, an empty evidence field, or a missing required rule-tool call. **It does not yet verify that a quote matches the source, that the tool completed successfully, or that the final verdict agrees with the tool result.** Those checks remain reviewer responsibilities and extension points.
+The structural gate blocks malformed JSON, empty `evidence`, or a skipped rule tool. Note what remains an open extension point for human review: the current validator checks that `search_text` and the rule tool were called and cited, but does not yet cryptographically verify that a quoted string wasn't paraphrased or that the agent's final summary didn't contradict the tool's return value.
 
-### Cross-document path
+### Cross-document path (`E2`)
 
-A separate runner handles rules where the main document makes a claim that must be checked against an attachment.
+When a claim in the main report ("held 5 member conferences") must be verified against attachment PDFs (sign-in sheets, photos, minutes), the runner executes a three-stage chain:
 
 ![Cross-document verification flow](docs/assets/cross-file-flow.svg)
 
 <sub>[Mermaid source](docs/assets/cross-file-flow.mmd)</sub>
-
-The live path needs local PDFs and a vision-capable model. The cross-file `--mock` example tests the code comparator only; it does not run OCR or evaluate a vision model.
 
 ## Try it locally
 
